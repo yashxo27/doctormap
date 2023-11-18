@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+    <h1>django home</h1>
+    <div id="map" style="width: 100%; height: 600px;"></div>
+
+    {% comment %} <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic29oYW1wYW4yNCIsImEiOiJjbG1ydjhsdTMwOXpqMmxwOTk0N3Vuc25sIn0.SWJt_UOZ69_P_ToW6mZVqA';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [0, 0], // Set an initial center (e.g., city center coordinates)
+            zoom: 10 // Set an initial zoom level for city view
+        });
+
+        // Create an empty bounds object to contain the markers
+        const bounds = new mapboxgl.LngLatBounds();
+
+        {% for address in addresses %}
+        const marker = new mapboxgl.Marker()
+            .setLngLat([{{ address.long }}, {{ address.lat }}])
+            .addTo(map);
+
+        // Extend the bounds to include this marker's location
+        bounds.extend([{{ address.long }}, {{ address.lat }}]);
+        {% endfor %}
+
+        // Fit the map to the bounds of all markers with a lower zoom level
+        map.fitBounds(bounds, { padding: 50, maxZoom: 14 }); // Adjust padding and maxZoom as needed
+    </script> {% endcomment %}
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic29oYW1wYW4yNCIsImEiOiJjbG1ydjhsdTMwOXpqMmxwOTk0N3Vuc25sIn0.SWJt_UOZ69_P_ToW6mZVqA';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [0, 0], // Set an initial center (e.g., city center coordinates)
+            zoom: 10 // Set an initial zoom level for city view
+        });
+    
+        // Create an empty bounds object to contain the markers
+        const bounds = new mapboxgl.LngLatBounds();
+    
+        // Loop through each address and create a marker
+        {% for address in addresses %}
+            const marker{{ forloop.counter }} = new mapboxgl.Marker()
+                .setLngLat([{{ address.long }}, {{ address.lat }}])
+                .addTo(map);
+    
+            // Extend the bounds to include this marker's location
+            bounds.extend([{{ address.long }}, {{ address.lat }}]);
+        {% endfor %}
+    
+        // Add CST station location
+        const cstStation = new mapboxgl.Marker()
+            .setLngLat([73.0033, 19.1045]) // CST station coordinates
+            .addTo(map);
+    
+        // Extend the bounds to include CST station location
+        bounds.extend([73.0033, 19.1045]);
+    
+        // Fit the map to the bounds of all markers with a lower zoom level
+        map.fitBounds(bounds, { padding: 50, maxZoom: 14 }); // Adjust padding and maxZoom as needed
+    </script>        
+</body>
+</html>
